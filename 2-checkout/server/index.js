@@ -9,6 +9,12 @@ const db = require("./db");
 
 const app = express();
 
+//-----parser hmst-----
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 // Adds `req.session_id` based on the incoming cookie value.
 // Generates a new session if one does not exist.
 app.use(sessionHandler);
@@ -28,14 +34,16 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
  */
 
 app.post('/theGoods', (req, res) => {
-  console.log('howdy post', req.body)
-  db.addUser(req.body, (err, results) => {
-    if (err) {
-      res.status(404).send(err);
-    } else {
-      res.status(201).send(results);
-    }
-  })
+  // console.log('res in post', res.body)
+  db.addUser(req, res);
+  // , (err, results) => {
+  //   if (err) {
+  //     res.status(404).send(err);
+  //   } else {
+  //     res.status(201).send(results);
+  //   }
+  // })
+
 })
 
 app.listen(process.env.PORT);

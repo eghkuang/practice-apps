@@ -23,7 +23,8 @@ db.connectAsync()
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100),
         email VARCHAR(100),
-        password VARCHAR(100)
+        password VARCHAR(100),
+        session VARCHAR(150)
         )`
     )
   )
@@ -31,11 +32,21 @@ db.connectAsync()
 
 //-----functions here---------
 
-addUser = function(data, callback) {
-  console.log('db post??', data)
-  db.queryAsync(
-    `INSERT INTO peopleinformation (name, email, password) VALUES (${data.name}, ${data.email}, ${data.password})`
+addUser = function(data, res) {
+  // console.log('db post??', data)
+  var body = data.body;
+  var session = data.session_id;
+  return db.queryAsync(
+    `INSERT INTO peopleinformation (name, email, password, session) VALUES ("${body.name}", "${body.email}", "${body.password}", "${session}")`
   )
+  .then((results) => {
+    console.log('it worked ha')
+    res.status(201).send(results)
+  })
+  .catch((err) => {
+    console.log('o no')
+    res.status(500).send(err);
+  })
 }
 
 
