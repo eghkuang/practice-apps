@@ -5,13 +5,13 @@ import Form1 from "./components/form1.jsx"
 import Form2 from "./components/form2.jsx"
 import Form3 from "./components/form3.jsx"
 import Summary from "./components/form4.jsx"
+import End from "./components/form5.jsx"
 import axios from "axios";
 
 class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      summary: [],
       sumbitButton: 0,
       name: '',
       email: '',
@@ -33,6 +33,7 @@ class App extends React.Component{
     this.handleClick = this.handleClick.bind(this);
     this.handleForm = this.handleForm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resetClick = this.resetClick.bind(this);
   }
 
 
@@ -53,19 +54,43 @@ class App extends React.Component{
     this.setState({[name]: event.target.value})
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    var data = {
+
+  handleSubmit() {
+    console.log('hello????????')
+    axios.post('/userData', {
       name: this.state.name,
       email: this.state.email,
       password: this.state.pw
-    }
-    axios.post('/theGoods', data)
+    })
       .then((response) => {
-        console.log('post success')
+        console.log('post success:', response)
+      })
+      .catch((err) => {
+        console.log('axios post is wonky:', err);
       })
   }
 
+
+  resetClick(event) {
+    if(this.state.sumbitButton === 5) {
+      this.setState({
+        sumbitButton: 0,
+        name: '',
+        email: '',
+        pw: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        addressZip: '',
+        phone: '',
+        credit: '',
+        exp: '',
+        cvv: '',
+        zip: ''
+      })
+    }
+  }
 
 
 
@@ -84,17 +109,20 @@ class App extends React.Component{
       button = <Form3 state={this.state} form3={this.handleClick} handleForm={this.handleForm}/>
 
     } else if (this.state.sumbitButton === 4) {
-      button = <Summary/>
+      button = <Summary data={this.state} axiospost={this.handleSubmit} form4={this.handleClick}/>
+
+    } else if (this.state.sumbitButton === 5) {
+      button = <End reset={this.resetClick}/>
 
     }
 
     return(
       <div>
-        <p>Hello, World!</p>
+        <p>Check Me Out ( ° ͜ʖ °)</p>
         {button}
-        <p>
+        {/* <p>
           <code>Page Cookie: {JSON.stringify(document.cookie, undefined, "\t")}</code>
-        </p>
+        </p> */}
       </div>
       // document.getElementById("root")
     );

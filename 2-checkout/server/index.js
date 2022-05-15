@@ -33,9 +33,10 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
  *
  */
 
-app.post('/theGoods', (req, res) => {
-  // console.log('res in post', res.body)
-  db.addUser(req, res);
+app.post('/userData', (req, res) => {
+  console.log('req in post', req.body)
+  console.log('hello?????')
+  db.addUser(req.body, res);
   // , (err, results) => {
   //   if (err) {
   //     res.status(404).send(err);

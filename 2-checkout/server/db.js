@@ -33,11 +33,10 @@ db.connectAsync()
 //-----functions here---------
 
 addUser = function(data, res) {
-  // console.log('db post??', data)
-  var body = data.body;
+  console.log('db post??', data)
   var session = data.session_id;
   return db.queryAsync(
-    `INSERT INTO peopleinformation (name, email, password, session) VALUES ("${body.name}", "${body.email}", "${body.password}", "${session}")`
+    `INSERT INTO peopleinformation (name, email, password, session) VALUES ("${data.name}", "${data.email}", "${data.password}", "${session}")`
   )
   .then((results) => {
     console.log('it worked ha')
